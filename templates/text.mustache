@@ -1,2 +1,7 @@
 <h3>{{title}}</h3>
 <p>{{{text}}}</p>
+<ul class="list-group">
+{{#items}}
+    <li class="list-group-item  d-flex justify-content-between align-items-center">{{item}}<span class="badge badge-primary badge-pill">{{badge}}</span></li>
+{{/items}}
+</ul>

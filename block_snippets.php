@@ -20,6 +20,8 @@
  * @copyright 2020 University of Chichester {@link www.chi.ac.uk}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
+require_once($CFG->dirroot . '/blocks/snippets/classes/output/enrolments.php');
+use \block_snippets\output\enrolments;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -30,12 +32,22 @@ class block_snippets extends block_base {
     }
 
     public function get_content() {
-        global $OUTPUT;
+        global $OUTPUT, $USER;
         $this->content = new stdClass();
         $data = new stdClass();
         $data->title = 'Snippet title';
         $data->text = 'Hello world!';
+        $data->items = [];
+        for ($x = 0; $x < rand(3,8); $x++) {
+            $item = new stdClass();
+            $item->item = 'Item ' . ($x + 1);
+            $item->badge = rand(5, 15 + $x);
+            $data->items[] = $item;
+        }
         $this->content->text = $OUTPUT->render_from_template('block_snippets/text', $data);
+        $erenderer = new enrolments($USER->id);
+        $this->content->text .= $OUTPUT->render_from_template('block_snippets/enrolments', $erenderer->export_for_template($OUTPUT));
+        $this->content->text .= $OUTPUT->render($erenderer);
         $this->content->footer = '';
         return $this->content;
     }
