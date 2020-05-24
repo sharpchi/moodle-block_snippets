@@ -30,9 +30,13 @@ class block_snippets extends block_base {
     }
 
     public function get_content() {
+        global $OUTPUT;
         $this->content = new stdClass();
-        $this->content->text = 'Hello';
-        $this->content->footer = 'World';
+        $data = new stdClass();
+        $data->title = 'Snippet title';
+        $data->text = 'Hello world!';
+        $this->content->text = $OUTPUT->render_from_template('block_snippets/text', $data);
+        $this->content->footer = '';
         return $this->content;
     }
 
